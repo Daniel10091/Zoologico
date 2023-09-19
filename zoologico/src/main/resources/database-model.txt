@@ -1,0 +1,17 @@
+
+[ Fornecedor ]  -> tb_fornecedor
+                -> tb_endereco
+
+[ Zoologico ]   -> tb_zoologico
+                -> tb_fornecedor
+                -> tb_endereco
+
+[ Funcionario ] -> tb_funcionario
+                -> tb_endereco
+                -> tb_zoologico
+                -> tb_cargo
+                -> tb_departamento
+
+[ Animal ]      -> tb_animal
+                -> tb_especie
+                -> tb_zoologico
