@@ -17,6 +17,7 @@ public interface AnimalMapper {
   @Mapping(source = "animal.tamanho", target = "animalTamanho")
   @Mapping(source = "animal.descricao", target = "animalDescricao")
   @Mapping(source = "animal.especieId", target = "especieCode")
+  @Mapping(source = "animal.zoologicoId", target = "zoologicoCode")
   public AnimalDTO toDto(Animal departamento);
 
   @InheritInverseConfiguration

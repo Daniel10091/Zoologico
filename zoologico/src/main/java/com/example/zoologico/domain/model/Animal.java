@@ -42,4 +42,7 @@ public class Animal {
   @Column(name = "ESPECIE_ID")
   private Long especieId;
 
+  @Column(name = "ZOOLOGICO_ID")
+  private Long zoologicoId;
+
 }
