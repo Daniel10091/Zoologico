@@ -1,4 +1,4 @@
-2CREATE DATABASE  IF NOT EXISTS `zoologico` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
+CREATE DATABASE  IF NOT EXISTS `zoologico` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
 USE `zoologico`;
 -- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
 --
