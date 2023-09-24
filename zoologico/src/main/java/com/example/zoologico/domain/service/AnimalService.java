@@ -16,9 +16,9 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class AnimalService {
 
-  private final AnimalRepository animalRepository;
-  private final EspecieRepository especieRepository;
-  private final ZoologicoRepository zoologicoRepository;
+  private AnimalRepository animalRepository;
+  private EspecieRepository especieRepository;
+  private ZoologicoRepository zoologicoRepository;
   
   public AnimalService(
     AnimalRepository animalRepository, 
@@ -66,7 +66,7 @@ public class AnimalService {
    * @param Entity { <b>{@link Animal}</b> }
    * @return New <b>{@code Animal}</b>
    */
-  public Animal registerUser(Animal animal) {
+  public Animal registerAnimal(Animal animal) {
     final Animal newAnimal = new Animal();
     Animal animalReturn = null;
 
@@ -87,6 +87,25 @@ public class AnimalService {
     animalReturn = animalRepository.save(newAnimal);
 
     return animalReturn;
+  }
+
+  /**
+   * Delete a Animal by {@code id}
+   * 
+   * @param id
+   * @return <b>{@code void}</b>
+   */
+  public void deleteAnimal(Long id) {
+    // Animal animalToDelete = null;
+
+    if (animalRepository.findById(id).isPresent())
+      throw new EntityNotFoundException("Animal com o id " + id + " não foi encontrado");
+
+    try {
+      animalRepository.deleteById(id);
+    } catch (Exception e) {
+      System.out.println("[ ERROR ] -> Error to delete user: " + e.getMessage());
+    }
   }
   
 }

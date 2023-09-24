@@ -16,6 +16,6 @@ public interface DepartamentoMapper {
   public FuncionarioDTO toDto(Departamento departamento);
 
   @InheritInverseConfiguration
-  public Departamento toEntiry(FuncionarioDTO funcionarioDTO);
+  public Departamento toEntity(FuncionarioDTO funcionarioDTO);
 
 }

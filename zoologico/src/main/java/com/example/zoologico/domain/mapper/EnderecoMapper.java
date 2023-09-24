@@ -19,6 +19,6 @@ public interface EnderecoMapper {
   public FornecedorDTO toDto(Endereco endereco);
 
   @InheritInverseConfiguration
-  public Endereco toEntiry(FornecedorDTO fornecedorDTO);
+  public Endereco toEntity(FornecedorDTO fornecedorDTO);
 
 }

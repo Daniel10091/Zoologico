@@ -18,6 +18,6 @@ public interface ZoologicoMapper {
   public ZoologicoDTO toDto(Zoologico zoologico);
 
   @InheritInverseConfiguration
-  public Zoologico toEntiry(ZoologicoDTO zoologicoDTO);
+  public Zoologico toEntity(ZoologicoDTO zoologicoDTO);
 
 }

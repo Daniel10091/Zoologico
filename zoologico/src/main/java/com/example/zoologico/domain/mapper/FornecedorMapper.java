@@ -17,6 +17,6 @@ public interface FornecedorMapper {
   public FornecedorDTO toDto(Fornecedor fornecedor);
 
   @InheritInverseConfiguration
-  public Fornecedor toEntiry(FornecedorDTO fornecedorDTO);
+  public Fornecedor toEntity(FornecedorDTO fornecedorDTO);
 
 }

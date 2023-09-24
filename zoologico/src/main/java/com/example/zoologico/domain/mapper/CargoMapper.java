@@ -17,6 +17,6 @@ public interface CargoMapper {
   public FuncionarioDTO toDto(Cargo cargo);
 
   @InheritInverseConfiguration
-  public Cargo toEntiry(FuncionarioDTO funcionarioDTO);
+  public Cargo toEntity(FuncionarioDTO funcionarioDTO);
 
 }

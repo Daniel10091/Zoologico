@@ -18,6 +18,6 @@ public interface EspecieMapper {
   public AnimalDTO toDto(Especie especie);
 
   @InheritInverseConfiguration
-  public Especie toEntiry(AnimalDTO animalDTO);
+  public Especie toEntity(AnimalDTO animalDTO);
 
 }

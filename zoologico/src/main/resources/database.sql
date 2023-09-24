@@ -62,9 +62,12 @@ CREATE TABLE `animal` (
   `TAMANHO` varchar(45) DEFAULT NULL,
   `DESCRICAO` varchar(250) DEFAULT NULL,
   `ESPECIE_ID` int(11) NOT NULL,
+  `ZOOLOGICO_ID` int(11) NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `ESPECIE_ID` (`ESPECIE_ID`),
-  CONSTRAINT `animal_ibfk_1` FOREIGN KEY (`ESPECIE_ID`) REFERENCES `especie` (`ID`)
+  KEY `ZOOLOGICO_ID` (`ZOOLOGICO_ID`),
+  CONSTRAINT `animal_ibfk_1` FOREIGN KEY (`ESPECIE_ID`) REFERENCES `especie` (`ID`),
+  CONSTRAINT `animal_ibfk_2` FOREIGN KEY (`ZOOLOGICO_ID`) REFERENCES `zoologico` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

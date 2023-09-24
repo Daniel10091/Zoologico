@@ -7,7 +7,7 @@ import org.mapstruct.Mapping;
 import com.example.zoologico.domain.dto.AnimalDTO;
 import com.example.zoologico.domain.model.Animal;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface AnimalMapper {
   
   @Mapping(source = "animal.id", target = "animalcode")
@@ -18,9 +18,9 @@ public interface AnimalMapper {
   @Mapping(source = "animal.descricao", target = "animalDescricao")
   @Mapping(source = "animal.especieId", target = "especieCode")
   @Mapping(source = "animal.zoologicoId", target = "zoologicoCode")
-  public AnimalDTO toDto(Animal departamento);
+  public AnimalDTO toDto(Animal animal);
 
   @InheritInverseConfiguration
-  public Animal toEntiry(AnimalDTO animalDTO);
+  public Animal toEntity(AnimalDTO animalDTO);
 
 }
