@@ -16,7 +16,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler({ EntityNotFoundException.class })
   public ResponseEntity<ErrorDto> handleAnimalNotFound(RuntimeException ex, WebRequest request) {
-    var errorDto = new ErrorDto(404, "Nenhum animal encontrado", ex.getMessage(), request.getDescription(false));
+    var errorDto = new ErrorDto(404, "Não encontrado", ex.getMessage(), request.getDescription(false));
     return ResponseEntity.status(errorDto.getStatus()).body(errorDto);
   }
 

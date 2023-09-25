@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 
 import com.example.zoologico.domain.exception.EntityNotFoundException;
 import com.example.zoologico.domain.model.Animal;
+import com.example.zoologico.domain.model.Especie;
+import com.example.zoologico.domain.model.Zoologico;
 import com.example.zoologico.domain.repository.AnimalRepository;
-import com.example.zoologico.domain.repository.EspecieRepository;
-import com.example.zoologico.domain.repository.ZoologicoRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -16,29 +16,27 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class AnimalService {
 
-  private AnimalRepository animalRepository;
-  private EspecieRepository especieRepository;
-  private ZoologicoRepository zoologicoRepository;
+  private final AnimalRepository animalRepository;
+
+  private final ZoologicoService zoologicoService;
+  private final EspecieService especieService;
   
   public AnimalService(
     AnimalRepository animalRepository, 
-    EspecieRepository especieRepository,
-    ZoologicoRepository zoologicoRepository) {
-      this.animalRepository = animalRepository;
-      this.especieRepository = especieRepository;
-      this.zoologicoRepository = zoologicoRepository;
-  }
-  
-  public List<Animal> getAll() {
-    return animalRepository.findAll();
+    ZoologicoService zoologicoService, 
+    EspecieService especieService
+  ) {
+    this.animalRepository = animalRepository;
+    this.zoologicoService = zoologicoService;
+    this.especieService = especieService;
   }
 
   /**
-   * Get all Animals
+   * Get all Animais
    * 
-   * @return {@code List<Animals>}
+   * @return {@code List<Animal>}
    */
-  public List<Animal> getAllAnimals() {
+  public List<Animal> getAllAnimais() {
     List<Animal> animals = null;
 
     animals = animalRepository.findAll();
@@ -69,22 +67,60 @@ public class AnimalService {
   public Animal registerAnimal(Animal animal) {
     final Animal newAnimal = new Animal();
     Animal animalReturn = null;
+    Especie especie = null;
+    Zoologico zoologico = null;
 
-    this.especieRepository.findById(animal.getEspecieId())
-      .map(especie -> {
-        newAnimal.setEspecieId(especie.getId());
-        return newAnimal;
-      })
-      .orElseThrow(() -> new EntityNotFoundException("Especie com o id " + animal.getEspecieId() + " não foi encontrado"));
+    especie = especieService.findEspecieById(animal.getEspecieId());
 
-    this.zoologicoRepository.findById(animal.getZoologicoId())
-      .map(zoologico -> {
-        newAnimal.setZoologicoId(zoologico.getId());
-        return newAnimal;
-      })
-      .orElseThrow(() -> new EntityNotFoundException("Zoológico com o id " + animal.getEspecieId() + " não foi encontrado"));
+    newAnimal.setEspecieId(especie.getId());
+      
+    zoologico = zoologicoService.findZoologicoById(animal.getZoologicoId());
+    
+    newAnimal.setZoologicoId(zoologico.getId());
 
-    animalReturn = animalRepository.save(newAnimal);
+    try {
+      animalReturn = animalRepository.save(newAnimal);
+    } catch (Exception e) {
+      System.out.println("[ ERROR ] -> Error to save animal: " + e.getMessage());
+    }
+
+    return animalReturn;
+  }
+
+  /**
+   * Update a Animal by {@code id}
+   * 
+   * @param id
+   * @param Entity { <b>{@link Animal}</b> }
+   * @return <b>{@code Animal}</b>
+   */
+  public Animal updateAnimal(Long id, Animal animal) {
+    Animal animalToUpdate = null;
+    Animal animalReturn = null;
+    Especie especie = null;
+    Zoologico zoologico = null;
+
+    animalToUpdate = findAnimalById(id);
+
+    animalToUpdate = animal;
+
+    especie = especieService.findEspecieById(animal.getEspecieId());
+    
+    animalToUpdate.setEspecieId(especie.getId());
+      
+    zoologico = zoologicoService.findZoologicoById(animal.getZoologicoId());
+    
+    animalToUpdate.setZoologicoId(zoologico.getId());
+
+    // animalToUpdate.setNome(animal.getNome());
+    // animalToUpdate.setDataNascimento(animal.getDataNascimento());
+    // animalToUpdate.setCor(animal.getCor());
+
+    try {
+      animalReturn = animalRepository.save(animalToUpdate);
+    } catch (Exception e) {
+      System.out.println("[ ERROR ] -> Error to update animal: " + e.getMessage());
+    }
 
     return animalReturn;
   }
@@ -95,16 +131,15 @@ public class AnimalService {
    * @param id
    * @return <b>{@code void}</b>
    */
-  public void deleteAnimal(Long id) {
-    // Animal animalToDelete = null;
+  public void deleteAnimalById(Long id) {
+    Animal animalToDelete = null;
 
-    if (animalRepository.findById(id).isPresent())
-      throw new EntityNotFoundException("Animal com o id " + id + " não foi encontrado");
+    animalToDelete = findAnimalById(id);
 
     try {
-      animalRepository.deleteById(id);
+      animalRepository.deleteById(animalToDelete.getId());
     } catch (Exception e) {
-      System.out.println("[ ERROR ] -> Error to delete user: " + e.getMessage());
+      System.out.println("[ ERROR ] -> Error to delete animal: " + e.getMessage());
     }
   }
   

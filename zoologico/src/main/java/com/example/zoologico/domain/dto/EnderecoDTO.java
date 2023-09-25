@@ -7,11 +7,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class FornecedorDTO {
-
-  private Long fornecedorCode;
-  private String fornecedorCnpj;
-  private String fornecedorRazaoSocial;
+public class EnderecoDTO {
+  
   private Long enderecoCode;
+  private String pais;
+  private String estado;
+  private String cidade;
+  private String logradouro;
+  private String complemento;
 
 }

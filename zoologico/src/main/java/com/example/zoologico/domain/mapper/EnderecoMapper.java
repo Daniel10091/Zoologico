@@ -4,7 +4,7 @@ import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import com.example.zoologico.domain.dto.FornecedorDTO;
+import com.example.zoologico.domain.dto.EnderecoDTO;
 import com.example.zoologico.domain.model.Endereco;
 
 @Mapper(componentModel = "spring")
@@ -16,9 +16,9 @@ public interface EnderecoMapper {
   @Mapping(source = "endereco.cidade", target = "cidade")
   @Mapping(source = "endereco.logradouro", target = "logradouro")
   @Mapping(source = "endereco.complemento", target = "complemento")
-  public FornecedorDTO toDto(Endereco endereco);
+  public EnderecoDTO toDto(Endereco endereco);
 
   @InheritInverseConfiguration
-  public Endereco toEntity(FornecedorDTO fornecedorDTO);
+  public Endereco toEntity(EnderecoDTO enderecoDTO);
 
 }
