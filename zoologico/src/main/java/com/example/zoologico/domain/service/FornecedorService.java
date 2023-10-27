@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.zoologico.domain.exception.EmptyListException;
 import com.example.zoologico.domain.exception.EntityNotFoundException;
+import com.example.zoologico.domain.exception.RequestErrorException;
 import com.example.zoologico.domain.model.Endereco;
 import com.example.zoologico.domain.model.Fornecedor;
 import com.example.zoologico.domain.repository.FornecedorRepository;
@@ -37,7 +39,7 @@ public class FornecedorService {
     fornecedores = fornecedorRepository.findAll();
 
     if (fornecedores.isEmpty()) 
-      throw new EntityNotFoundException("Nenhum fornecedor encontrado");
+      throw new EmptyListException("Nenhum fornecedor registrado");
 
     return fornecedores;
   }
@@ -54,6 +56,20 @@ public class FornecedorService {
   }
 
   /**
+   * Find one Fornecedor by {@code id}
+   * 
+   * @param id
+   * @return
+   */
+  public Fornecedor findOneFornecedorById(Long id) {
+    Fornecedor fornecedor = null;
+
+    fornecedor = fornecedorRepository.findById(id).orElseThrow(() -> new RequestErrorException("O fornecedor com o id " + id + " não existe"));
+
+    return fornecedor;
+  }
+
+  /**
    * Register a new Fornecedor
    * 
    * @param fornecedor
@@ -63,7 +79,7 @@ public class FornecedorService {
     Fornecedor newFornecedor = null;
     Endereco endereco = null;
 
-    endereco = enderecoService.findEnderecoById(fornecedor.getEnderecoId());
+    endereco = enderecoService.findOneEnderecoById(fornecedor.getEnderecoId());
 
     fornecedor.setEnderecoId(endereco.getId());
     

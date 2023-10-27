@@ -60,8 +60,8 @@ public class ZoologicoController {
   // Register a new Zoologico
   @PostMapping(value = "/zoologico")
   public ResponseEntity<ZoologicoDTO> registerZoologico(@RequestBody ZoologicoDTO zoologico) {
-    EnderecoDTO endereco = new EnderecoDTO(null, zoologico.getPais(), zoologico.getEstado(), zoologico.getCidade(), zoologico.getLogradouro(), zoologico.getComplemento());
-    FornecedorDTO fornecedor = new FornecedorDTO(null, zoologico.getFornecedorCnpj(), zoologico.getFornecedorRazaoSocial(), null);
+    EnderecoDTO endereco = new EnderecoDTO(zoologico.getEnderecoCode(), zoologico.getPais(), zoologico.getEstado(), zoologico.getCidade(), zoologico.getLogradouro(), zoologico.getComplemento());
+    FornecedorDTO fornecedor = new FornecedorDTO(zoologico.getFornecedorCode(), zoologico.getFornecedorCnpj(), zoologico.getFornecedorRazaoSocial(), null);
     var result = zoologicoService.registerZoologico(zoologicoMapper.toEntity(zoologico), enderecoMapper.toEntity(endereco), fornecedorMapper.toEntity(fornecedor));
     return ResponseEntity.ok(zoologicoMapper.toDto(result));
   }

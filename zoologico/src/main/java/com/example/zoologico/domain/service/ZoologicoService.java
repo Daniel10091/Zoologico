@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.zoologico.domain.exception.EmptyListException;
 import com.example.zoologico.domain.exception.EntityNotFoundException;
+import com.example.zoologico.domain.exception.RequestErrorException;
 import com.example.zoologico.domain.model.Endereco;
 import com.example.zoologico.domain.model.Fornecedor;
 import com.example.zoologico.domain.model.Zoologico;
@@ -42,10 +44,21 @@ public class ZoologicoService {
     zoologicos = zoologicoRepository.findAll();
 
     if (zoologicos.isEmpty()) 
-      throw new EntityNotFoundException("Nenhum zoologico encontrado");
+      throw new EmptyListException("Nenhum zoologico registrado");
 
     return zoologicos;
   }
+
+  // public List<Zoologico> getAllZoologicosByFornecedorId(Long id) {
+  //   List<Zoologico> zoologicos = null;
+
+  //   zoologicos = zoologicoRepository.findAllByFornecedorId(id);
+
+  //   if (zoologicos.isEmpty()) 
+  //     throw new EmptyListException("Nenhum zoologico registrado");
+
+  //   return zoologicos;
+  // }
 
   /**
    * Find a Zoologico by {@code id}
@@ -59,6 +72,20 @@ public class ZoologicoService {
   }
 
   /**
+   * Find one Zoologico by {@code id}
+   * 
+   * @param id
+   * @return
+   */
+  public Zoologico findOneZoologicoById(Long id) {
+    Zoologico zoologico = null;
+
+    zoologico = zoologicoRepository.findById(id).orElseThrow(() -> new RequestErrorException("O zoologico com o id " + id + " não existe"));
+
+    return zoologico;
+  }
+
+  /**
    * Register a new Zoologico
    * 
    * @param zoologico, fornecedor, endereco
@@ -68,15 +95,19 @@ public class ZoologicoService {
     final Zoologico newZoologico = new Zoologico();
     Zoologico zoologicoReturn = null;
     Endereco newEndereco = null;
-    Fornecedor newFornecedor = null;
+    Fornecedor existFornecedor = null;
 
     newEndereco = enderecoService.registerEndereco(endereco);
     
     newZoologico.setEnderecoId(newEndereco.getId());
 
-    newFornecedor = fornecedorService.registerFornecedor(fornecedor);
+    existFornecedor = fornecedorService.findOneFornecedorById(fornecedor.getId());
 
-    newZoologico.setFornecedorId(newFornecedor.getId());
+    // if (existFornecedor == null) {
+    //   throw new RequestErrorException("O fornecedor com o id " + fornecedor.getId() + " não existe");
+    // }
+
+    newZoologico.setFornecedorId(existFornecedor.getId());
 
     try {
       zoologicoReturn = zoologicoRepository.save(newZoologico);

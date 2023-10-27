@@ -8,21 +8,28 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.example.zoologico.domain.dto.ErrorDto;
 import com.example.zoologico.domain.exception.RequestErrorException;
+import com.example.zoologico.domain.exception.EmptyListException;
 import com.example.zoologico.domain.exception.EntityAlreadyExistException;
 import com.example.zoologico.domain.exception.EntityNotFoundException;
 
 @ControllerAdvice
 public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
+  @ExceptionHandler({ EmptyListException.class })
+  public ResponseEntity<ErrorDto> handleEmptyList(RuntimeException ex, WebRequest request) {
+    var errorDto = new ErrorDto(204, "Não foi encontrado nenhum registro", ex.getMessage(), request.getDescription(false));
+    return ResponseEntity.status(errorDto.getStatus()).body(errorDto);
+  }
+
   @ExceptionHandler({ EntityNotFoundException.class })
-  public ResponseEntity<ErrorDto> handleAnimalNotFound(RuntimeException ex, WebRequest request) {
+  public ResponseEntity<ErrorDto> handleEntityNotFound(RuntimeException ex, WebRequest request) {
     var errorDto = new ErrorDto(404, "Não encontrado", ex.getMessage(), request.getDescription(false));
     return ResponseEntity.status(errorDto.getStatus()).body(errorDto);
   }
 
   @ExceptionHandler({ EntityAlreadyExistException.class })
-  public ResponseEntity<ErrorDto> handleAnimalAlreadyExist(RuntimeException ex, WebRequest request) {
-    var errorDto = new ErrorDto(409, "Animal já existe", ex.getMessage(), request.getDescription(false));
+  public ResponseEntity<ErrorDto> handleEntityAlreadyExist(RuntimeException ex, WebRequest request) {
+    var errorDto = new ErrorDto(409, "Entidade já existe", ex.getMessage(), request.getDescription(false));
     return ResponseEntity.status(errorDto.getStatus()).body(errorDto);
   }
 

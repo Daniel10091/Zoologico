@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.zoologico.domain.exception.EmptyListException;
 import com.example.zoologico.domain.exception.EntityNotFoundException;
 import com.example.zoologico.domain.model.Animal;
 import com.example.zoologico.domain.model.Especie;
@@ -42,7 +43,7 @@ public class AnimalService {
     animals = animalRepository.findAll();
 
     if (animals.isEmpty()) 
-      throw new EntityNotFoundException("Nenhum animal encontrado");
+      throw new EmptyListException("Nenhum animal registrado");
 
     return animals;
   }
@@ -74,7 +75,15 @@ public class AnimalService {
 
     newAnimal.setEspecieId(especie.getId());
       
-    zoologico = zoologicoService.findZoologicoById(animal.getZoologicoId());
+    zoologico = zoologicoService.findOneZoologicoById(animal.getZoologicoId());
+
+    // if (zoologico.equals(animal.getZoologicoId())) {
+    //   throw new RequestErrorException("O animal " + animal.getNome() + " já está registrado no zoologico " + zoologico.getNome());
+    // }
+
+    // if (zoologico.getAnimais().size() >= zoologico.getCapacidadeMaxima()) {
+    //   throw new RequestErrorException("O zoologico " + zoologico.getNome() + " já está com a capacidade máxima");
+    // }
     
     newAnimal.setZoologicoId(zoologico.getId());
 
@@ -134,7 +143,7 @@ public class AnimalService {
   public void deleteAnimalById(Long id) {
     Animal animalToDelete = null;
 
-    animalToDelete = findAnimalById(id);
+    animalToDelete = this.findAnimalById(id);
 
     try {
       animalRepository.deleteById(animalToDelete.getId());

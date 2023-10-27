@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.example.zoologico.domain.exception.EntityNotFoundException;
+import com.example.zoologico.domain.exception.RequestErrorException;
 import com.example.zoologico.domain.model.Endereco;
 import com.example.zoologico.domain.repository.EnderecoRepositoty;
 
@@ -45,6 +46,20 @@ public class EnderecoService {
   public Endereco findEnderecoById(Long id) {
     return enderecoRepositoty.findById(id)
         .orElseThrow(() -> new EntityNotFoundException("Endereco com o id " + id + " não foi encontrado"));
+  }
+
+  /**
+   * Find one Endereco by {@code id}
+   * 
+   * @param id
+   * @return
+   */
+  public Endereco findOneEnderecoById(Long id) {
+    Endereco endereco = null;
+
+    endereco = enderecoRepositoty.findById(id).orElseThrow(() -> new RequestErrorException("O endereço com o id " + id + " não existe"));
+
+    return endereco;
   }
 
   /**

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.zoologico.domain.exception.EmptyListException;
 import com.example.zoologico.domain.exception.EntityNotFoundException;
 import com.example.zoologico.domain.model.Funcionario;
 import com.example.zoologico.domain.repository.FuncionarioRepository;
@@ -31,7 +32,7 @@ public class FuncionarioService {
     funcionarios = funcionarioRepositoty.findAll();
 
     if (funcionarios.isEmpty()) 
-      throw new EntityNotFoundException("Nenhum funcionário encontrado");
+      throw new EmptyListException("Nenhum funcionário registrado");
 
     return funcionarios;
   }

@@ -1,3 +1,4 @@
+[ Endereco ]    -> tb_endereco
 
 [ Fornecedor ]  -> tb_fornecedor
                 -> tb_endereco
