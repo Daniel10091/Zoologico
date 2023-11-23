@@ -81,7 +81,8 @@ public class FornecedorService {
 
     endereco = enderecoService.findOneEnderecoById(fornecedor.getEnderecoId());
 
-    fornecedor.setEnderecoId(endereco.getId());
+    if (endereco == null)
+      throw new RequestErrorException("O endereco com o id " + fornecedor.getEnderecoId() + " não existe");
     
     try {
       newFornecedor = fornecedorRepository.save(fornecedor);

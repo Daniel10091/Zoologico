@@ -14,7 +14,7 @@ public interface FornecedorMapper {
   @Mapping(source = "fornecedor.cnpj", target = "fornecedorCnpj")
   @Mapping(source = "fornecedor.razaoSocial", target = "fornecedorRazaoSocial")
   @Mapping(source = "fornecedor.enderecoId", target = "enderecoCode")
-    public FornecedorDTO toDto(Fornecedor fornecedor);
+  public FornecedorDTO toDto(Fornecedor fornecedor);
 
   @InheritInverseConfiguration
   public Fornecedor toEntity(FornecedorDTO fornecedorDTO);
