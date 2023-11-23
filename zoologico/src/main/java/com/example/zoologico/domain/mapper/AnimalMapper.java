@@ -10,7 +10,7 @@ import com.example.zoologico.domain.model.Animal;
 @Mapper(componentModel = "spring")
 public interface AnimalMapper {
   
-  @Mapping(source = "animal.id", target = "animalcode")
+  @Mapping(source = "animal.id", target = "animalCode")
   @Mapping(source = "animal.nome", target = "animalNome")
   @Mapping(source = "animal.dataNascimento", target = "animalDataNascimento")
   @Mapping(source = "animal.cor", target = "animalCor")

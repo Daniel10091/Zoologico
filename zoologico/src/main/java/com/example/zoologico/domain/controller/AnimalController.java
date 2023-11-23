@@ -35,7 +35,7 @@ public class AnimalController {
   // Get all Animais
   @GetMapping(value = "/animal")
   public ResponseEntity<List<AnimalDTO>> getAnimais() {
-    var result = animalService.getAllAnimais().stream().map(animalMapper::toDto).collect(Collectors.toList());
+    var result = animalService.getAllAnimais().stream().collect(Collectors.toList());
     return ResponseEntity.ok(result);
   }
 

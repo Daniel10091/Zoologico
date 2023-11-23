@@ -25,7 +25,7 @@ public class EspecieService {
    * 
    * @return {@code List<Especie>}
    */
-  public List<Especie> getAllEnderecos() {
+  public List<Especie> getAllEspecies() {
     List<Especie> especies = null;
 
     especies = especieRepository.findAll();

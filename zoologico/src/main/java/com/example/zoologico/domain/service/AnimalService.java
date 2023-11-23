@@ -1,9 +1,11 @@
 package com.example.zoologico.domain.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.zoologico.domain.dto.AnimalDTO;
 import com.example.zoologico.domain.exception.EmptyListException;
 import com.example.zoologico.domain.exception.EntityNotFoundException;
 import com.example.zoologico.domain.model.Animal;
@@ -37,15 +39,48 @@ public class AnimalService {
    * 
    * @return {@code List<Animal>}
    */
-  public List<Animal> getAllAnimais() {
+  public List<AnimalDTO> getAllAnimais() {
     List<Animal> animals = null;
+    List<AnimalDTO> animalsDTO =  new ArrayList<AnimalDTO>();
 
     animals = animalRepository.findAll();
+
+    animals.stream().forEach(animal -> {
+      AnimalDTO animalDTO = new AnimalDTO();
+      Especie especie = new Especie();
+      Zoologico zoologico = new Zoologico();
+
+      animalDTO.setAnimalCode(animal.getId());
+      animalDTO.setAnimalNome(animal.getNome());
+      animalDTO.setAnimalDataNascimento(animal.getDataNascimento());
+      animalDTO.setAnimalCor(animal.getCor());
+      animalDTO.setAnimalTamanho(animal.getTamanho());
+      animalDTO.setAnimalDescricao(animal.getDescricao());
+      
+      especie = especieService.findEspecieById(animal.getEspecieId());
+      
+      animalDTO.setEspecieCode(especie.getId());
+      animalDTO.setEspecieNome(especie.getNome());
+      animalDTO.setEspecieDescricao(especie.getDescricao());
+      animalDTO.setEspecieClassificacao(especie.getClassificacao());
+      animalDTO.setEspecieOrigem(especie.getOrigem());
+
+      zoologico = zoologicoService.findZoologicoById(animal.getZoologicoId());
+
+      animalDTO.setZoologicoCode(zoologico.getId());
+      animalDTO.setZoologicoCnpj(zoologico.getCnpj());
+      animalDTO.setZoologicoNome(zoologico.getNome());
+
+      animalDTO.setEnderecoCode(zoologico.getEnderecoId());
+      animalDTO.setFornecedorCode(zoologico.getFornecedorId());
+
+      animalsDTO.add(animalDTO);
+    });
 
     if (animals.isEmpty()) 
       throw new EmptyListException("Nenhum animal registrado");
 
-    return animals;
+    return animalsDTO;
   }
 
   /**
