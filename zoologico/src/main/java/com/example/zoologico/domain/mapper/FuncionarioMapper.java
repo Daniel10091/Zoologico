@@ -13,11 +13,11 @@ public interface FuncionarioMapper {
   @Mapping(source = "funcionario.id", target = "code")
   @Mapping(source = "funcionario.nome", target = "nome")
   @Mapping(source = "funcionario.sobrenome", target = "sobrenome")
-  @Mapping(source = "funcionario.enderecoId", target = "enderecoId")
-  @Mapping(source = "funcionario.zoologicoId", target = "zoologicoId")
-  @Mapping(source = "funcionario.cargoId", target = "cargoId")
-  @Mapping(source = "funcionario.departamentoId", target = "departamentoId")
   @Mapping(source = "funcionario.nuCpf", target = "nuCpf")
+  @Mapping(source = "funcionario.enderecoId", target = "enderecoCode")
+  @Mapping(source = "funcionario.zoologicoId", target = "zoologicoCode")
+  @Mapping(source = "funcionario.cargoId", target = "cargoCode")
+  @Mapping(source = "funcionario.departamentoId", target = "departamentoCode")
   public FuncionarioDTO toDto(Funcionario funcionario);
 
   @InheritInverseConfiguration

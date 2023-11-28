@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.zoologico.domain.dto.EnderecoDTO;
-import com.example.zoologico.domain.dto.FornecedorDTO;
 import com.example.zoologico.domain.dto.ZoologicoDTO;
 import com.example.zoologico.domain.mapper.EnderecoMapper;
 import com.example.zoologico.domain.mapper.FornecedorMapper;
@@ -60,9 +59,8 @@ public class ZoologicoController {
   // Register a new Zoologico
   @PostMapping(value = "/zoologico")
   public ResponseEntity<ZoologicoDTO> registerZoologico(@RequestBody ZoologicoDTO zoologico) {
-    EnderecoDTO endereco = new EnderecoDTO(zoologico.getEnderecoCode(), zoologico.getPais(), zoologico.getEstado(), zoologico.getCidade(), zoologico.getLogradouro(), zoologico.getComplemento());
-    FornecedorDTO fornecedor = new FornecedorDTO(zoologico.getFornecedorCode(), zoologico.getFornecedorCnpj(), zoologico.getFornecedorRazaoSocial(), null);
-    var result = zoologicoService.registerZoologico(zoologicoMapper.toEntity(zoologico), enderecoMapper.toEntity(endereco), fornecedorMapper.toEntity(fornecedor));
+    EnderecoDTO address = new EnderecoDTO(zoologico.getEnderecoCode(), zoologico.getPais(), zoologico.getEstado(), zoologico.getCidade(), zoologico.getLogradouro(), zoologico.getComplemento());
+    var result = zoologicoService.registerZoologico(zoologicoMapper.toEntity(zoologico), enderecoMapper.toEntity(address));
     return ResponseEntity.ok(zoologicoMapper.toDto(result));
   }
 

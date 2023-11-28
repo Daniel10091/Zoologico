@@ -1,8 +1,17 @@
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/Zoologico
+          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+          base-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/token
+
+          
   datasource:
     url: jdbc:mysql://localhost:3306/zoologico
     username: root
-    password: ""
+    password: "123@abc"
   jpa:
     open-in-view: false
     show-sql: true
@@ -19,3 +28,10 @@ server:
   port: 8084
   servlet:
     context-path: /zoologico
+    
+
+jwt:
+  auth:
+    converter:
+      resource-id: report-management
+      principle-attribute: preferred_username

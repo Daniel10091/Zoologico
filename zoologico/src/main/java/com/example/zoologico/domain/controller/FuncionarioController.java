@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.zoologico.domain.dto.EnderecoDTO;
 import com.example.zoologico.domain.dto.FuncionarioDTO;
+import com.example.zoologico.domain.mapper.EnderecoMapper;
 import com.example.zoologico.domain.mapper.FuncionarioMapper;
 import com.example.zoologico.domain.service.FuncionarioService;
 
@@ -23,13 +25,16 @@ public class FuncionarioController {
   
   private final FuncionarioService funcionarioService;
   private final FuncionarioMapper funcionarioMapper;
+  private final EnderecoMapper enderecoMapper;
 
   public FuncionarioController(
     FuncionarioService funcionarioService, 
-    FuncionarioMapper funcionarioMapper
+    FuncionarioMapper funcionarioMapper,
+    EnderecoMapper enderecoMapper
   ) {
     this.funcionarioService = funcionarioService;
     this.funcionarioMapper = funcionarioMapper;
+    this.enderecoMapper = enderecoMapper;
   }
 
   // Get all Funcionarioes
@@ -49,7 +54,8 @@ public class FuncionarioController {
   // Register a new Funcionario
   @PostMapping(value = "/funcionario")
   public ResponseEntity<FuncionarioDTO> registerFuncionario(@RequestBody FuncionarioDTO funcionario) {
-    var result = funcionarioService.registerFuncionario(funcionarioMapper.toEntity(funcionario));
+    EnderecoDTO address = new EnderecoDTO(null, funcionario.getPais(), funcionario.getEstado(), funcionario.getCidade(), funcionario.getLogradouro(), funcionario.getComplemento());
+    var result = funcionarioService.registerFuncionario(funcionarioMapper.toEntity(funcionario), enderecoMapper.toEntity(address));
     return ResponseEntity.ok(funcionarioMapper.toDto(result));
   }
 

@@ -91,31 +91,26 @@ public class ZoologicoService {
    * @param zoologico, fornecedor, endereco
    * @return <b>{@code Zoologico}</b>
    */
-  public Zoologico registerZoologico(Zoologico zoologico, Endereco endereco, Fornecedor fornecedor) {
-    final Zoologico newZoologico = new Zoologico();
-    Zoologico zoologicoReturn = null;
+  public Zoologico registerZoologico(Zoologico zoologico, Endereco endereco) {
     Endereco newEndereco = null;
     Fornecedor existFornecedor = null;
 
     newEndereco = enderecoService.registerEndereco(endereco);
     
-    newZoologico.setEnderecoId(newEndereco.getId());
+    zoologico.setEnderecoId(newEndereco.getId());
 
-    existFornecedor = fornecedorService.findOneFornecedorById(fornecedor.getId());
+    existFornecedor = fornecedorService.findOneFornecedorById(zoologico.getFornecedorId());
 
-    // if (existFornecedor == null) {
-    //   throw new RequestErrorException("O fornecedor com o id " + fornecedor.getId() + " não existe");
-    // }
-
-    newZoologico.setFornecedorId(existFornecedor.getId());
+    if (existFornecedor == null) 
+      throw new EntityNotFoundException("O fornecedor com o id " + zoologico.getFornecedorId() + " não existe");
 
     try {
-      zoologicoReturn = zoologicoRepository.save(newZoologico);
+      zoologico = zoologicoRepository.save(zoologico);
     } catch (Exception e) {
       System.out.println("[ ERROR ] -> Error to save zoologico: " + e.getMessage());
     }
 
-    return zoologicoReturn;
+    return zoologico;
   }
 
   /**

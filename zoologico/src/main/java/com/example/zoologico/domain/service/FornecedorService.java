@@ -76,7 +76,6 @@ public class FornecedorService {
    * @return <b>{@code Fornecedor}</b>
    */
   public Fornecedor registerFornecedor(Fornecedor fornecedor) {
-    Fornecedor newFornecedor = null;
     Endereco endereco = null;
 
     endereco = enderecoService.findOneEnderecoById(fornecedor.getEnderecoId());
@@ -85,12 +84,12 @@ public class FornecedorService {
       throw new RequestErrorException("O endereco com o id " + fornecedor.getEnderecoId() + " não existe");
     
     try {
-      newFornecedor = fornecedorRepository.save(fornecedor);
+      fornecedor = fornecedorRepository.save(fornecedor);
     } catch (Exception e) {
       System.out.println("[ ERROR ] -> Error to save fornecedor: " + e.getMessage());
     }
 
-    return newFornecedor;
+    return fornecedor;
   }
 
   /**

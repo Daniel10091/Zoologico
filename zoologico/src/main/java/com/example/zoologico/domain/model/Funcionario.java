@@ -30,6 +30,9 @@ public class Funcionario {
   @Column(name = "SOBRENOME")
   private String sobrenome;
 
+  @Column(name = "NU_CPF")
+  private String nuCpf;
+
   @Column(name = "ENDERECO_ID")
   private Long enderecoId;
 
@@ -41,8 +44,5 @@ public class Funcionario {
 
   @Column(name = "DEPARTAMENTO_ID")
   private Long departamentoId;
-
-  @Column(name = "NU_CPF")
-  private String nuCpf;
 
 }

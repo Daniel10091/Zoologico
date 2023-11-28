@@ -101,16 +101,18 @@ public class AnimalService {
    * @return New <b>{@code Animal}</b>
    */
   public Animal registerAnimal(Animal animal) {
-    final Animal newAnimal = new Animal();
-    Animal animalReturn = null;
     Especie especie = null;
     Zoologico zoologico = null;
 
     especie = especieService.findEspecieById(animal.getEspecieId());
 
-    newAnimal.setEspecieId(especie.getId());
+    if (especie == null) 
+      throw new EntityNotFoundException("A especie " + animal.getEspecieId() + " não foi encontrada");
       
     zoologico = zoologicoService.findOneZoologicoById(animal.getZoologicoId());
+
+    if (zoologico == null) 
+      throw new EntityNotFoundException("O zoologico " + animal.getZoologicoId() + " não foi encontrado");
 
     // if (zoologico.equals(animal.getZoologicoId())) {
     //   throw new RequestErrorException("O animal " + animal.getNome() + " já está registrado no zoologico " + zoologico.getNome());
@@ -119,16 +121,14 @@ public class AnimalService {
     // if (zoologico.getAnimais().size() >= zoologico.getCapacidadeMaxima()) {
     //   throw new RequestErrorException("O zoologico " + zoologico.getNome() + " já está com a capacidade máxima");
     // }
-    
-    newAnimal.setZoologicoId(zoologico.getId());
 
     try {
-      animalReturn = animalRepository.save(newAnimal);
+      animal = animalRepository.save(animal);
     } catch (Exception e) {
       System.out.println("[ ERROR ] -> Error to save animal: " + e.getMessage());
     }
 
-    return animalReturn;
+    return animal;
   }
 
   /**

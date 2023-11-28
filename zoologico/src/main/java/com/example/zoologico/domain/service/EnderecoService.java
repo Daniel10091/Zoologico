@@ -75,6 +75,7 @@ public class EnderecoService {
       newEndereco = enderecoRepositoty.save(endereco);
     } catch (Exception e) {
       System.out.println("[ ERROR ] -> Error to save endereco: " + e.getMessage());
+      throw new RequestErrorException("Erro ao registrar o endereço");
     }
 
     return newEndereco;
