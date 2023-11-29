@@ -1,5 +1,7 @@
 package com.example.zoologico.domain.dto;
 
+import java.time.LocalDate;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +13,7 @@ public class AnimalDTO {
 
   private Long animalCode;
   private String animalNome;
-  private String animalDataNascimento;
+  private LocalDate animalDataNascimento;
   private String animalCor;
   private String animalTamanho;
   private String animalDescricao;

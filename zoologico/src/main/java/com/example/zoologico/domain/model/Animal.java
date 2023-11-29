@@ -1,5 +1,7 @@
 package com.example.zoologico.domain.model;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,7 +30,7 @@ public class Animal {
   private String nome;
 
   @Column(name = "DATA_NASCIMENTO")
-  private String dataNascimento;
+  private LocalDate dataNascimento;
 
   @Column(name = "COR")
   private String cor;
