@@ -13,5 +13,10 @@ public class FornecedorDTO {
   private String fornecedorCnpj;
   private String fornecedorRazaoSocial;
   private Long enderecoCode;
+  private String pais;
+  private String estado;
+  private String cidade;
+  private String logradouro;
+  private String complemento;
 
 }

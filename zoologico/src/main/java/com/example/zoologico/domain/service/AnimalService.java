@@ -52,7 +52,7 @@ public class AnimalService {
 
       animalDTO.setAnimalCode(animal.getId());
       animalDTO.setAnimalNome(animal.getNome());
-      animalDTO.setAnimalDataNascimento(animal.getDataNascimento());
+      animalDTO.setAnimalDataNascimento(animal.getDataNascimento().toString());
       animalDTO.setAnimalCor(animal.getCor());
       animalDTO.setAnimalTamanho(animal.getTamanho());
       animalDTO.setAnimalDescricao(animal.getDescricao());
@@ -146,13 +146,22 @@ public class AnimalService {
 
     animalToUpdate = findAnimalById(id);
 
+    if (animalToUpdate == null) 
+      throw new EntityNotFoundException("Animal com o id " + id + " não foi encontrado");
+
     animalToUpdate = animal;
 
     especie = especieService.findEspecieById(animal.getEspecieId());
+
+    if (especie == null) 
+      throw new EntityNotFoundException("A especie " + animal.getEspecieId() + " não foi encontrada");
     
     animalToUpdate.setEspecieId(especie.getId());
       
     zoologico = zoologicoService.findZoologicoById(animal.getZoologicoId());
+
+    if (zoologico == null) 
+      throw new EntityNotFoundException("O zoologico " + animal.getZoologicoId() + " não foi encontrado");
     
     animalToUpdate.setZoologicoId(zoologico.getId());
 
