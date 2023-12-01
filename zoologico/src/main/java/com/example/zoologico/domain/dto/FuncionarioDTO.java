@@ -22,9 +22,15 @@ public class FuncionarioDTO {
   private String complemento;
   
   private Long zoologicoCode;
+  private String zoologicoCnpj;
+  private String zoologicoNome;
 
   private Long cargoCode;
+  private String cargoTitulo;
+  private String cargoDescricao;
+  private Double salarioBase;
 
   private Long departamentoCode;
+  private String departamentoNome;
 
 }

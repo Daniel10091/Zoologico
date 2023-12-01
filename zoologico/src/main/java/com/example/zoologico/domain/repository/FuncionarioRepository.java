@@ -14,6 +14,6 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> 
   Optional<Funcionario> findById(Long id);
 
   @Query(value = "SELECT * FROM funcionario WHERE nu_cpf = ?1", nativeQuery = true)
-  Optional<Funcionario> findByNuCpf(String nuCpf);
+  Funcionario findByNuCpf(String nuCpf);
 
 }

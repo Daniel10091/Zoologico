@@ -1,7 +1,10 @@
 package com.example.zoologico.domain.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
+import com.example.zoologico.domain.exception.EmptyListException;
 import com.example.zoologico.domain.exception.EntityNotFoundException;
 import com.example.zoologico.domain.model.Departamento;
 import com.example.zoologico.domain.repository.DepartamentoRepository;
@@ -19,6 +22,22 @@ public class DepartamentoService {
   }
 
   /**
+   * Get all Departamentos
+   * 
+   * @return {@code List<Departamento>}
+   */
+  public List<Departamento> getAllDepartamentos() {
+    List<Departamento> departamentos = null;
+
+    departamentos = departamentoRepository.findAll();
+
+    if (departamentos.isEmpty()) 
+      throw new EmptyListException("Nenhum departamento registrado");
+
+    return departamentos;
+  }
+
+  /**
    * Find a Departamento by {@code id}
    * 
    * @param id
@@ -26,7 +45,7 @@ public class DepartamentoService {
    */
   public Departamento findDepartamentoById(Long id) {
     return departamentoRepository.findById(id)
-        .orElseThrow(() -> new EntityNotFoundException("Funcionário com o id " + id + " não foi encontrado"));
+        .orElseThrow(() -> new EntityNotFoundException("Departamento com o id " + id + " não foi encontrado"));
   }
 
 }

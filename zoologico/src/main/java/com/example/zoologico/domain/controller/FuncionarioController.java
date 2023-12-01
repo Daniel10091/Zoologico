@@ -40,7 +40,7 @@ public class FuncionarioController {
   // Get all Funcionarioes
   @GetMapping(value = "/funcionario")
   public ResponseEntity<List<FuncionarioDTO>> getFuncionarios() {
-    var result = funcionarioService.getAllFuncionarios().stream().map(funcionarioMapper::toDto).collect(Collectors.toList());
+    var result = funcionarioService.getAllFuncionarios().stream().collect(Collectors.toList());
     return ResponseEntity.ok(result);
   }
 
@@ -62,7 +62,8 @@ public class FuncionarioController {
   // Update a Funcionario by id
   @PutMapping(value = "/funcionario/{id}")
   public ResponseEntity<FuncionarioDTO> updateFuncionario(@PathVariable(value = "id") Long id, @RequestBody FuncionarioDTO funcionario) {
-    var result = funcionarioService.updateFuncionario(id, funcionarioMapper.toEntity(funcionario));
+    EnderecoDTO address = new EnderecoDTO(funcionario.getEnderecoCode(), funcionario.getPais(), funcionario.getEstado(), funcionario.getCidade(), funcionario.getLogradouro(), funcionario.getComplemento());
+    var result = funcionarioService.updateFuncionario(id, funcionarioMapper.toEntity(funcionario), enderecoMapper.toEntity(address));
     return ResponseEntity.ok(funcionarioMapper.toDto(result));
   }
 
