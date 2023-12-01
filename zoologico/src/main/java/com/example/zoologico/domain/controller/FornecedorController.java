@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.zoologico.domain.dto.EnderecoDTO;
 import com.example.zoologico.domain.dto.FornecedorDTO;
+import com.example.zoologico.domain.mapper.EnderecoMapper;
 import com.example.zoologico.domain.mapper.FornecedorMapper;
 import com.example.zoologico.domain.service.FornecedorService;
 
@@ -22,20 +24,24 @@ import com.example.zoologico.domain.service.FornecedorService;
 public class FornecedorController {
   
   private final FornecedorService fornecedorService;
+
   private final FornecedorMapper fornecedorMapper;
+  private final EnderecoMapper enderecoMapper;
 
   public FornecedorController(
     FornecedorService fornecedorService, 
-    FornecedorMapper fornecedorMapper
+    FornecedorMapper fornecedorMapper,
+    EnderecoMapper enderecoMapper
   ) {
     this.fornecedorService = fornecedorService;
     this.fornecedorMapper = fornecedorMapper;
+    this.enderecoMapper = enderecoMapper;
   }
 
   // Get all Fornecedores
   @GetMapping(value = "/fornecedor")
   public ResponseEntity<List<FornecedorDTO>> getFornecedores() {
-    var result = fornecedorService.getAllFornecedores().stream().map(fornecedorMapper::toDto).collect(Collectors.toList());
+    var result = fornecedorService.getAllFornecedores().stream().collect(Collectors.toList());
     return ResponseEntity.ok(result);
   }
 
@@ -49,14 +55,16 @@ public class FornecedorController {
   // Register a new Fornecedor
   @PostMapping(value = "/fornecedor")
   public ResponseEntity<FornecedorDTO> registerFornecedor(@RequestBody FornecedorDTO fornecedor) {
-    var result = fornecedorService.registerFornecedor(fornecedorMapper.toEntity(fornecedor));
+    EnderecoDTO address = new EnderecoDTO(fornecedor.getEnderecoCode(), fornecedor.getPais(), fornecedor.getEstado(), fornecedor.getCidade(), fornecedor.getLogradouro(), fornecedor.getComplemento());
+    var result = fornecedorService.registerFornecedor(fornecedorMapper.toEntity(fornecedor), enderecoMapper.toEntity(address));
     return ResponseEntity.ok(fornecedorMapper.toDto(result));
   }
 
   // Update a Fornecedor by id
   @PutMapping(value = "/fornecedor/{id}")
   public ResponseEntity<FornecedorDTO> updateFornecedor(@PathVariable(value = "id") Long id, @RequestBody FornecedorDTO fornecedor) {
-    var result = fornecedorService.updateFornecedor(id, fornecedorMapper.toEntity(fornecedor));
+    EnderecoDTO address = new EnderecoDTO(fornecedor.getEnderecoCode(), fornecedor.getPais(), fornecedor.getEstado(), fornecedor.getCidade(), fornecedor.getLogradouro(), fornecedor.getComplemento());
+    var result = fornecedorService.updateFornecedor(id, fornecedorMapper.toEntity(fornecedor), enderecoMapper.toEntity(address));
     return ResponseEntity.ok(fornecedorMapper.toDto(result));
   }
 

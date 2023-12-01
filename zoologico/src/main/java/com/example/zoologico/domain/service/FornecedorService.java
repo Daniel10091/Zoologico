@@ -1,9 +1,11 @@
 package com.example.zoologico.domain.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.zoologico.domain.dto.FornecedorDTO;
 import com.example.zoologico.domain.exception.EmptyListException;
 import com.example.zoologico.domain.exception.EntityNotFoundException;
 import com.example.zoologico.domain.exception.RequestErrorException;
@@ -33,15 +35,36 @@ public class FornecedorService {
    * 
    * @return {@code List<Fornecedor>}
    */
-  public List<Fornecedor> getAllFornecedores() {
+  public List<FornecedorDTO> getAllFornecedores() {
     List<Fornecedor> fornecedores = null;
+    List<FornecedorDTO> fornecedoresDTO = new ArrayList<FornecedorDTO>();
 
     fornecedores = fornecedorRepository.findAll();
+
+    fornecedores.stream().forEach(fornecedor -> {
+      FornecedorDTO fornecedorDTO = new FornecedorDTO();
+      Endereco endereco = new Endereco();
+
+      fornecedorDTO.setFornecedorCode(fornecedor.getId());
+      fornecedorDTO.setFornecedorCnpj(fornecedor.getCnpj());
+      fornecedorDTO.setFornecedorRazaoSocial(fornecedor.getRazaoSocial());
+      fornecedorDTO.setEnderecoCode(fornecedor.getEnderecoId());
+
+      endereco = enderecoService.findEnderecoById(fornecedor.getEnderecoId());
+
+      fornecedorDTO.setPais(endereco.getPais());
+      fornecedorDTO.setEstado(endereco.getEstado());
+      fornecedorDTO.setCidade(endereco.getCidade());
+      fornecedorDTO.setLogradouro(endereco.getLogradouro());
+      fornecedorDTO.setComplemento(endereco.getComplemento());
+
+      fornecedoresDTO.add(fornecedorDTO);
+    });
 
     if (fornecedores.isEmpty()) 
       throw new EmptyListException("Nenhum fornecedor registrado");
 
-    return fornecedores;
+    return fornecedoresDTO;
   }
 
   /**
@@ -70,18 +93,39 @@ public class FornecedorService {
   }
 
   /**
+   * Find a Fornecedor by {@code cnpj}
+   * 
+   * @param cnpj
+   * @return <b>{@code Fornecedor}</b>
+   */
+  public Fornecedor findFornecedorByCnpj(String cnpj) {
+    return fornecedorRepository.findFornecedorByCnpj(cnpj)
+        .orElseThrow(() -> new EntityNotFoundException("Fornecedor com o cnpj " + cnpj + " não foi encontrado"));
+  }
+
+  /**
    * Register a new Fornecedor
    * 
    * @param fornecedor
    * @return <b>{@code Fornecedor}</b>
    */
-  public Fornecedor registerFornecedor(Fornecedor fornecedor) {
-    Endereco endereco = null;
+  public Fornecedor registerFornecedor(Fornecedor fornecedor, Endereco endereco) {
+    Endereco newEndereco = null;
+    Fornecedor existFornecedor = null;
 
-    endereco = enderecoService.findOneEnderecoById(fornecedor.getEnderecoId());
+    if (endereco.getPais() == null && endereco.getEstado() == null && endereco.getCidade() == null && endereco.getLogradouro() == null)
+      throw new RequestErrorException("O endereço não pode ser nulo");
 
-    if (endereco == null)
-      throw new RequestErrorException("O endereco com o id " + fornecedor.getEnderecoId() + " não existe");
+    newEndereco = enderecoService.registerEndereco(endereco);
+    
+    fornecedor.setEnderecoId(newEndereco.getId());
+
+    existFornecedor = findFornecedorByCnpj(fornecedor.getCnpj());
+
+    if (existFornecedor != null) 
+      throw new RequestErrorException("O fornecedor com o cnpj " + fornecedor.getCnpj() + " já existe");
+    
+    fornecedor.setCnpj(fornecedor.getCnpj().replaceAll(".", "").replaceAll("/", "").replaceAll("-", "").trim());
     
     try {
       fornecedor = fornecedorRepository.save(fornecedor);
@@ -122,17 +166,24 @@ public class FornecedorService {
    * @param fornecedor
    * @return <b>{@code Fornecedor}</b>
    */
-  public Fornecedor updateFornecedor(Long id, Fornecedor fornecedor) {
+  public Fornecedor updateFornecedor(Long id, Fornecedor fornecedor, Endereco endereco) {
     Fornecedor fornecedorToUpdate = null;
-    Endereco endereco = null;
+    Endereco enderecoToUpdate = null;
 
     fornecedorToUpdate = findFornecedorById(id);
 
-    endereco = enderecoService.findEnderecoById(fornecedor.getEnderecoId());
-
     fornecedorToUpdate.setCnpj(fornecedor.getCnpj());
     fornecedorToUpdate.setRazaoSocial(fornecedor.getRazaoSocial());
-    fornecedorToUpdate.setEnderecoId(endereco.getId());
+
+    enderecoToUpdate = enderecoService.findEnderecoById(fornecedor.getEnderecoId());
+
+    enderecoToUpdate.setPais(endereco.getPais());
+    enderecoToUpdate.setEstado(endereco.getEstado());
+    enderecoToUpdate.setCidade(endereco.getCidade());
+    enderecoToUpdate.setLogradouro(endereco.getLogradouro());
+    enderecoToUpdate.setComplemento(endereco.getComplemento());
+
+    enderecoToUpdate = enderecoService.updateEndereco(endereco.getId(), endereco);
 
     try {
       fornecedorToUpdate = fornecedorRepository.save(fornecedorToUpdate);
