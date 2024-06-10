@@ -120,10 +120,10 @@ public class FornecedorService {
     
     fornecedor.setEnderecoId(newEndereco.getId());
 
-    existFornecedor = findFornecedorByCnpj(fornecedor.getCnpj());
+    //existFornecedor = findFornecedorByCnpj(fornecedor.getCnpj());
 
-    if (existFornecedor != null) 
-      throw new RequestErrorException("O fornecedor com o cnpj " + fornecedor.getCnpj() + " já existe");
+    //if (existFornecedor != null) 
+      //throw new RequestErrorException("O fornecedor com o cnpj " + fornecedor.getCnpj() + " já existe");
     
     fornecedor.setCnpj(fornecedor.getCnpj().replaceAll(".", "").replaceAll("/", "").replaceAll("-", "").trim());
     

@@ -25,5 +25,11 @@ public class AnimalDTO {
   private String zoologicoNome;
   private Long enderecoCode;
   private Long fornecedorCode;
+  
+  private Long historicoSaudeCode;
+  private String dataRegistro;
+  private String observacoesMedicas;
+  private String procedimentoMedico;
+  private String resultadoExame;
 
 }

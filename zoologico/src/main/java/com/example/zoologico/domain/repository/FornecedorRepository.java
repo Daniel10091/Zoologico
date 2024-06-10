@@ -14,7 +14,7 @@ public interface FornecedorRepository extends JpaRepository<Fornecedor, Long> {
   
   Optional<Fornecedor> findById(Long id);
 
-  @Query(value = "SELECT * FROM fornecedor WHERE cnpj = ?1", nativeQuery = true)
+  @Query(value = "SELECT * FROM fornecedor WHERE NU_CNPJ = ?1", nativeQuery = true)
   Optional<Fornecedor> findFornecedorByCnpj(@Param("cnpj") String cnpj);
 
 }
